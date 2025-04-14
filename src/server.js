@@ -9,7 +9,6 @@ import {
   verifyKey,
 } from 'discord-interactions';
 import { DAYS_COMMAND, TIMES_COMMAND } from './commands.js';
-import { InteractionResponseFlags } from 'discord-interactions';
 
 class JsonResponse extends Response {
   constructor(body, init) {

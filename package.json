@@ -1,7 +1,7 @@
 {
-  "name": "awwbot",
+  "name": "raidbot",
   "version": "1.0.0",
-  "description": "A simple discord bot that uses intents to post pictures from r/aww",
+  "description": "A simple discord bot that uses commands to create polls for raiding",
   "type": "module",
   "private": true,
   "main": "src/server.js",
@@ -15,7 +15,7 @@
     "publish": "wrangler deploy"
   },
   "keywords": [],
-  "author": "Justin Beckwith <justin.beckwith@gmail.com>",
+  "author": "Adria Gomis <gomisroca@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "discord-interactions": "^4.0.0",
