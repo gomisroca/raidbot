@@ -11,4 +11,13 @@ export const DAYS_COMMAND = {
 export const TIMES_COMMAND = {
   name: 'times',
   description: 'Create a poll to decide at which time we start raid.',
+  options: [
+    {
+      name: 'start_time',
+      description:
+        'The time we start raiding (please use Server Time for clarity)',
+      type: 4,
+      required: true,
+    },
+  ],
 };
