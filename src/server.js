@@ -60,15 +60,115 @@ router.post('/', async (request, env) => {
         return new JsonResponse({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: 'HI',
+            poll: {
+              question: {
+                text: 'What day(s) should we raid next week?',
+              },
+              answers: [
+                {
+                  answer_id: 1,
+                  poll_media: { text: 'Tuesday' },
+                },
+                {
+                  answer_id: 2,
+                  poll_media: { text: 'Wednesday' },
+                },
+                {
+                  answer_id: 3,
+                  poll_media: { text: 'Thursday' },
+                },
+                {
+                  answer_id: 4,
+                  poll_media: { text: 'Friday' },
+                },
+                {
+                  answer_id: 5,
+                  poll_media: { text: 'Saturday' },
+                },
+                {
+                  answer_id: 6,
+                  poll_media: { text: 'Sunday' },
+                },
+                {
+                  answer_id: 7,
+                  poll_media: { text: 'Monday' },
+                },
+              ],
+              allow_multiselect: true,
+            },
           },
         });
       }
       case TIMES_COMMAND.name.toLowerCase(): {
+        const userInput = interaction.data.options[0].value;
+        const startHour = parseInt(userInput, 10);
+
+        const now = new Date();
+        const baseDate = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
+        );
+
+        let timestamps = [];
+
+        let icons = {
+          1: '1️⃣',
+          2: '2️⃣',
+          3: '3️⃣',
+          4: '4️⃣',
+        };
+
+        for (let i = 0; i < 4; i++) {
+          const hour = startHour + i;
+          const targetDate = new Date(baseDate);
+          targetDate.setHours(hour, 0, 0, 0);
+
+          const unix = Math.floor(targetDate.getTime() / 1000);
+          timestamps.push({
+            icon: i + 1,
+            st: hour,
+            localized: `<t:${unix}:t>`,
+          });
+        }
+
         return new JsonResponse({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: 'HI',
+            content: `What time should raid start?\n
+            ${timestamps.map((t) => `\n ${icons[t.icon]} ${t.st}ST   -   ${t.localized} Your Time`).join('')}`,
+            poll: {
+              question: {
+                text: 'What time should raid start?',
+              },
+              answers: [
+                {
+                  answer_id: 1,
+                  poll_media: {
+                    text: `${icons[timestamps[0].icon]} ${timestamps[0].st}ST`,
+                  },
+                },
+                {
+                  answer_id: 2,
+                  poll_media: {
+                    text: `${icons[timestamps[1].icon]} ${timestamps[1].st}ST`,
+                  },
+                },
+                {
+                  answer_id: 3,
+                  poll_media: {
+                    text: `${icons[timestamps[2].icon]} ${timestamps[2].st}ST`,
+                  },
+                },
+                {
+                  answer_id: 4,
+                  poll_media: {
+                    text: `${icons[timestamps[3].icon]} ${timestamps[3].st}ST`,
+                  },
+                },
+              ],
+              allow_multiselect: true,
+            },
           },
         });
       }
