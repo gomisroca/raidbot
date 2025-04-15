@@ -113,7 +113,14 @@ router.post('/', async (request, env) => {
           startHour = parseInt(time, 10);
           startMinutes = 0;
         }
-        if (isNaN(startHour) || isNaN(startMinutes)) {
+        if (
+          isNaN(startHour) ||
+          isNaN(startMinutes) ||
+          startHour < 0 ||
+          startHour > 23 ||
+          startMinutes < 0 ||
+          startMinutes > 59
+        ) {
           return new JsonResponse({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
@@ -125,12 +132,22 @@ router.post('/', async (request, env) => {
 
         // Date handling
         const date = interaction.data.options[1].value;
-        const [day, month, year] = date.split('/').map(Number);
-        if (isNaN(day) || isNaN(month) || isNaN(year)) {
+        let [day, month, year] = date.split('/').map(Number);
+        if (isNaN(year)) {
+          year = new Date().getFullYear() - 2000;
+        }
+        if (
+          isNaN(day) ||
+          day < 1 ||
+          day > 31 ||
+          isNaN(month) ||
+          month < 1 ||
+          month > 12
+        ) {
           return new JsonResponse({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-              content: `Invalid date. Please use the format "DD/MM/YYYY".`,
+              content: `Invalid date. Please use the format "DD/MM/YY".`,
               flags: InteractionResponseFlags.EPHEMERAL,
             },
           });

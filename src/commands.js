@@ -21,7 +21,8 @@ export const TIMES_COMMAND = {
     },
     {
       name: 'date',
-      description: 'The date of the raid, in dd/mm/yy format. Ex. "20/05/2025"',
+      description:
+        'The date of the raid, in dd/mm or dd/mm/yy format. Ex. "20/05", "20/05/25"',
       type: 3,
       required: true,
     },
