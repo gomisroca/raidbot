@@ -100,15 +100,51 @@ router.post('/', async (request, env) => {
         });
       }
       case TIMES_COMMAND.name.toLowerCase(): {
-        const userInput = interaction.data.options[0].value;
-        const startHour = parseInt(userInput, 10);
+        // Time handling
+        const time = interaction.data.options[0].value;
+        let startHour;
+        let startMinutes;
+        if (time.includes(':')) {
+          const [hour, minutes] = time.split(':').map(Number);
+          startHour = parseInt(hour, 10);
+          startMinutes = parseInt(minutes, 10);
+        } else {
+          startHour = parseInt(time, 10);
+          startMinutes = 0;
+        }
+        if (isNaN(startHour) || isNaN(startMinutes)) {
+          return new JsonResponse({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: `Invalid time. Please use the format "HH:MM" or "HH".`,
+              ephemeral: true,
+            },
+          });
+        }
 
-        const now = new Date();
-        const baseDate = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate(),
-        );
+        // Date handling
+        const date = interaction.data.options[1].value;
+        const [day, month, year] = date.split('/').map(Number);
+        if (isNaN(day) || isNaN(month) || isNaN(year)) {
+          return new JsonResponse({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: `Invalid date. Please use the format "DD/MM/YYYY".`,
+              ephemeral: true,
+            },
+          });
+        }
+        const baseDate = new Date(2000 + year, month - 1, day);
+        const dayNames = [
+          'Sunday',
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+        ];
+        const weekdayName = dayNames[baseDate.getDay()];
 
         let timestamps = [];
 
@@ -122,7 +158,7 @@ router.post('/', async (request, env) => {
         for (let i = 0; i < 4; i++) {
           const hour = startHour + i;
           const targetDate = new Date(baseDate);
-          targetDate.setHours(hour, 0, 0, 0);
+          targetDate.setHours(hour, startMinutes, 0, 0);
 
           const unix = Math.floor(targetDate.getTime() / 1000);
           timestamps.push({
@@ -135,7 +171,7 @@ router.post('/', async (request, env) => {
         return new JsonResponse({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: `What time should raid start?\n
+            content: `What time should raid start on **${weekdayName}**?\n
             ${timestamps.map((t) => `\n ${icons[t.icon]} ${t.st}ST   -   ${t.localized} Your Time`).join('')}`,
             poll: {
               question: {

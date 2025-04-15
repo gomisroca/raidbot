@@ -15,8 +15,14 @@ export const TIMES_COMMAND = {
     {
       name: 'start_time',
       description:
-        'The time we start raiding (please use Server Time for clarity)',
-      type: 4,
+        'The time we start raiding. Ex. "18", "18:00" (please use Server Time for clarity)',
+      type: 3,
+      required: true,
+    },
+    {
+      name: 'date',
+      description: 'The date of the raid, in dd/mm/yy format. Ex. "20/05/2025"',
+      type: 3,
       required: true,
     },
   ],
