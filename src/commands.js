@@ -13,7 +13,7 @@ export const TIMES_COMMAND = {
   description: 'Create a poll to decide at which time we start raid.',
   options: [
     {
-      name: 'start_time',
+      name: 'time',
       description:
         'The time we start raiding. Ex. "18", "18:00" (please use Server Time for clarity)',
       type: 3,
