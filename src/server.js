@@ -4,6 +4,7 @@
 
 import { AutoRouter } from 'itty-router';
 import {
+  InteractionResponseFlags,
   InteractionResponseType,
   InteractionType,
   verifyKey,
@@ -117,7 +118,7 @@ router.post('/', async (request, env) => {
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
               content: `Invalid time. Please use the format "HH:MM" or "HH".`,
-              ephemeral: true,
+              flags: InteractionResponseFlags.EPHEMERAL,
             },
           });
         }
@@ -130,7 +131,7 @@ router.post('/', async (request, env) => {
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
               content: `Invalid date. Please use the format "DD/MM/YYYY".`,
-              ephemeral: true,
+              flags: InteractionResponseFlags.EPHEMERAL,
             },
           });
         }
