@@ -25,6 +25,52 @@ class JsonResponse extends Response {
 
 const router = AutoRouter();
 
+function formatFriendlyDate(date) {
+  const dayNames = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  const weekday = dayNames[date.getDay()];
+  const day = date.getDate();
+  const month = monthNames[date.getMonth()];
+
+  const ordinal = (n) => {
+    if (n > 3 && n < 21) return `${n}th`;
+    switch (n % 10) {
+      case 1:
+        return `${n}st`;
+      case 2:
+        return `${n}nd`;
+      case 3:
+        return `${n}rd`;
+      default:
+        return `${n}th`;
+    }
+  };
+
+  return `${weekday}, ${ordinal(day)} of ${month}`;
+}
+
 /**
  * A simple :wave: hello page to verify the worker is working.
  */
@@ -101,8 +147,14 @@ router.post('/', async (request, env) => {
         });
       }
       case TIMES_COMMAND.name.toLowerCase(): {
+        const timeOption = interaction.data.options.find(
+          (opt) => opt.name === 'time',
+        );
+        const dateOption = interaction.data.options.find(
+          (opt) => opt.name === 'date',
+        );
         // Time handling
-        const time = interaction.data.options[0].value;
+        const time = timeOption.value;
         let startHour;
         let startMinutes;
         if (time.includes(':')) {
@@ -131,7 +183,7 @@ router.post('/', async (request, env) => {
         }
 
         // Date handling
-        const date = interaction.data.options[1].value;
+        const date = dateOption.value;
         let [day, month, year] = date.split('/').map(Number);
         if (isNaN(year)) {
           year = new Date().getFullYear() - 2000;
@@ -153,16 +205,7 @@ router.post('/', async (request, env) => {
           });
         }
         const baseDate = new Date(2000 + year, month - 1, day);
-        const dayNames = [
-          'Sunday',
-          'Monday',
-          'Tuesday',
-          'Wednesday',
-          'Thursday',
-          'Friday',
-          'Saturday',
-        ];
-        const weekdayName = dayNames[baseDate.getDay()];
+        const formattedDay = formatFriendlyDate(baseDate);
 
         let timestamps = [];
 
@@ -189,7 +232,7 @@ router.post('/', async (request, env) => {
         return new JsonResponse({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: `What time should raid start on **${weekdayName}**?\n
+            content: `What time should raid start on **${formattedDay}**?\n
             ${timestamps.map((t) => `\n ${icons[t.icon]} ${t.st}ST   -   ${t.localized} Your Time`).join('')}`,
             poll: {
               question: {
