@@ -142,6 +142,7 @@ router.post('/', async (request, env) => {
                 },
               ],
               allow_multiselect: true,
+              duration: 48,
             },
           },
         });
@@ -265,6 +266,7 @@ router.post('/', async (request, env) => {
                 },
               ],
               allow_multiselect: true,
+              duration: 48,
             },
           },
         });
