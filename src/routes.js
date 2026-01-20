@@ -1,10 +1,9 @@
 import { AutoRouter } from 'itty-router';
 import { InteractionType, InteractionResponseType } from 'discord-interactions';
 import { verifyDiscordRequest, JsonResponse } from './utils/discord.js';
-import { DAYS_COMMAND, TIMES_COMMAND, SUMMARY_COMMAND } from './commands.js';
+import { DAYS_COMMAND, TIMES_COMMAND } from './commands.js';
 import { handleDays } from './handlers/days.js';
 import { handleTimes } from './handlers/times.js';
-import { handleSummary } from './handlers/summary.js';
 
 export const router = AutoRouter();
 
@@ -26,8 +25,6 @@ router.post('/', async (request, env) => {
         return handleDays(interaction, env);
       case TIMES_COMMAND.name.toLowerCase():
         return handleTimes(interaction, env);
-      case SUMMARY_COMMAND.name.toLowerCase():
-        return handleSummary(interaction, env);
       default:
         return new JsonResponse({ error: 'Unknown Command' }, { status: 400 });
     }
