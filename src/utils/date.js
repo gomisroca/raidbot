@@ -25,7 +25,11 @@ export function formatFriendlyDate(date) {
   const weekday = dayNames[date.getDay()];
   const day = date.getDate();
   const month = monthNames[date.getMonth()];
-  const ordinal = (n) =>
-    n > 3 && n < 21 ? `${n}th` : { 1: 'st', 2: 'nd', 3: 'rd' }[n % 10] || 'th';
+  const ordinal = (n) => {
+    const v = n % 100;
+    if (v >= 11 && v <= 13) return 'th';
+    return { 1: 'st', 2: 'nd', 3: 'rd' }[v % 10] || 'th';
+  };
+
   return `${weekday}, ${day}${ordinal(day)} of ${month}`;
 }

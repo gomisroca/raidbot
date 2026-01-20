@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { DAYS_COMMAND, TIMES_COMMAND, SUMMARY_COMMAND } from './commands.js';
+import { DAYS_COMMAND, TIMES_COMMAND } from './commands.js';
 import process from 'node:process';
 dotenv.config({ path: '.dev.vars' });
 
@@ -10,7 +10,7 @@ if (!token || !applicationId) {
   throw new Error('DISCORD_TOKEN and DISCORD_APPLICATION_ID are required.');
 }
 
-const commands = [DAYS_COMMAND, TIMES_COMMAND, SUMMARY_COMMAND];
+const commands = [DAYS_COMMAND, TIMES_COMMAND];
 
 const url = `https://discord.com/api/v10/applications/${applicationId}/commands`;
 
