@@ -109,11 +109,13 @@ export async function handleTimes(interaction, env) {
     poll_media: { text: `${t.icon} ${t.hour}ST` },
   }));
 
+  const RAIDERS_ROLE_ID = '1269013353926496289';
+
   return new JsonResponse({
     type: 4,
     data: {
       content:
-        `What time should raid start on **${formattedDay}**?\n` +
+        `<@&${RAIDERS_ROLE_ID}> What time should raid start on **${formattedDay}**?\n` +
         timestamps
           .map((t) => `\n ${t.icon} ${t.hour}ST - <t:${t.unix}:t>`)
           .join(''),

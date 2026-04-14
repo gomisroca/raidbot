@@ -37,11 +37,16 @@ export async function handleDays(interaction, env) {
     poll_media: { text: day },
   }));
 
+  const RAIDERS_ROLE_ID = '1269013353926496289';
+
   return new JsonResponse({
     type: 4,
     data: {
+      content: `<@&${RAIDERS_ROLE_ID}>`,
       poll: {
-        question: { text: 'What day(s) should we raid next week?' },
+        question: {
+          text: `What day(s) should we raid next week?`,
+        },
         answers: pollAnswers,
         allow_multiselect: true,
         duration: 48,
