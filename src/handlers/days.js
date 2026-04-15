@@ -43,6 +43,9 @@ export async function handleDays(interaction, env) {
     type: 4,
     data: {
       content: `<@&${RAIDERS_ROLE_ID}>`,
+      allowed_mentions: {
+        roles: [RAIDERS_ROLE_ID],
+      },
       poll: {
         question: {
           text: `What day(s) should we raid next week?`,

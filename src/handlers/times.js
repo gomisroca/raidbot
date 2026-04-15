@@ -119,6 +119,9 @@ export async function handleTimes(interaction, env) {
         timestamps
           .map((t) => `\n ${t.icon} ${t.hour}ST - <t:${t.unix}:t>`)
           .join(''),
+      allowed_mentions: {
+        roles: [RAIDERS_ROLE_ID],
+      },
       poll: {
         question: { text: 'What time should raid start?' },
         answers: pollAnswers,
