@@ -37,7 +37,7 @@ export async function handleDays(interaction, env) {
     poll_media: { text: day },
   }));
 
-  const RAIDERS_ROLE_ID = '1269013353926496289';
+  const RAIDERS_ROLE_ID = '899337124241870915';
 
   return new JsonResponse({
     type: 4,
