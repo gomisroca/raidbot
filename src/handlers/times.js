@@ -115,7 +115,8 @@ export async function handleTimes(interaction, env) {
     type: 4,
     data: {
       content:
-        `<@&${RAIDERS_ROLE_ID}> What time should raid start on **${formattedDay}**?\n` +
+        `<@&${RAIDERS_ROLE_ID}>\n` +
+        `What time should raid start on **${formattedDay}**?\n` +
         timestamps
           .map((t) => `\n ${t.icon} ${t.hour}ST - <t:${t.unix}:t>`)
           .join(''),
