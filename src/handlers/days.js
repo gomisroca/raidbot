@@ -38,13 +38,18 @@ export async function handleDays(interaction, env) {
   }));
 
   const RAIDERS_ROLE_ID = '1269013353926496289';
+  const FARM_ROLE_ID = '1507491921235411034';
+  const FARM_CHANNEL_ID = '1507491721397796984';
+
+  const roleId =
+    interaction.channel_id === FARM_CHANNEL_ID ? FARM_ROLE_ID : RAIDERS_ROLE_ID;
 
   return new JsonResponse({
     type: 4,
     data: {
-      content: `<@&${RAIDERS_ROLE_ID}>`,
+      content: `<@&${roleId}>`,
       allowed_mentions: {
-        roles: [RAIDERS_ROLE_ID],
+        roles: [roleId],
       },
       poll: {
         question: {
