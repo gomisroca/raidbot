@@ -116,12 +116,16 @@ export async function handleTimes(interaction, env) {
   const roleId =
     interaction.channel_id === FARM_CHANNEL_ID ? FARM_ROLE_ID : RAIDERS_ROLE_ID;
 
+  const farmText = `What time should we start on **${formattedDay}**?\n`;
+  const raidText = `What time should raid start on **${formattedDay}**?\n`;
+  const text = interaction.channel_id === FARM_CHANNEL_ID ? farmText : raidText;
+
   return new JsonResponse({
     type: 4,
     data: {
       content:
         `<@&${roleId}>\n` +
-        `What time should raid start on **${formattedDay}**?\n` +
+        text +
         timestamps
           .map((t) => `\n ${t.icon} ${t.hour}ST - <t:${t.unix}:t>`)
           .join(''),
@@ -129,7 +133,12 @@ export async function handleTimes(interaction, env) {
         roles: [roleId],
       },
       poll: {
-        question: { text: 'What time should raid start?' },
+        question: {
+          text:
+            interaction.channel_id === FARM_CHANNEL_ID
+              ? 'What time should we start?'
+              : 'What time should raid start?',
+        },
         answers: pollAnswers,
         allow_multiselect: true,
         duration: 48,

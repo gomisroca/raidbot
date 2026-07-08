@@ -44,6 +44,10 @@ export async function handleDays(interaction, env) {
   const roleId =
     interaction.channel_id === FARM_CHANNEL_ID ? FARM_ROLE_ID : RAIDERS_ROLE_ID;
 
+  const farmText = `What day(s) should we farm next week?`;
+  const raidText = `What day(s) should we raid next week?`;
+  const text = interaction.channel_id === FARM_CHANNEL_ID ? farmText : raidText;
+
   return new JsonResponse({
     type: 4,
     data: {
@@ -53,7 +57,7 @@ export async function handleDays(interaction, env) {
       },
       poll: {
         question: {
-          text: `What day(s) should we raid next week?`,
+          text: text,
         },
         answers: pollAnswers,
         allow_multiselect: true,
